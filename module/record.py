@@ -33,6 +33,28 @@ class Record:
         filenames = self.db_table.rows
         for filename in filenames:
             print(filename)
+
+    def search(self, name) -> list:
+        searchedList = []
+
+        rows = self.db_table.rows_where("name = ?", [name])
+        check_for_empty = self.db_table.rows_where("name = ?", [name])
+
+        try:
+            next(check_for_empty)
+        except StopIteration:
+            return []
+        
+        searchedList = [row for row in rows] #Convert to list
+        return searchedList
+
+    def delete_all(self, name):
+        rows = self.db_table.rows_where("name = ?", [name])
+        
+        for row in rows:
+            self.db_table.delete(row["rowid"])
+            
+        logging.info('Deleted ' + name)
     
     def is_match(self, filename) -> bool:
         rows = self.db_table.rows_where("name = ?", [filename])

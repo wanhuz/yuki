@@ -1,7 +1,10 @@
 from module.record import Record
 from module.watcher import Watcher
+from module.cli import Cli
 import logging
 from pathvalidate import sanitize_filename
+from dotenv import load_dotenv
+import os
 
 logging.basicConfig(
     filename="move-once.log", 
@@ -12,11 +15,19 @@ logging.basicConfig(
 class Controller:
 
     def __init__(self, record_path, src_path, dest_path, allowed_exts_list):
+        load_dotenv()
+
+        record_path = os.getenv("RECORD_PATH")
+        src_path = os.getenv("SRC_PATH")
+        dest_path = os.getenv("DEST_PATH")
+        allowed_exts_list = os.getenv("ALLOWED_EXTENSION_LIST")
+
         self.__RECORD = Record(record_path)
         self.__WATCHER = Watcher(src_path, 
                                  dest_path, 
                                  allowed_exts_list, 
                                  self.__RECORD)
+        self.__CLI = Cli(self.record)
     
     @property
     def record(self):
@@ -25,6 +36,13 @@ class Controller:
     @property
     def watcher(self):
         return self.__WATCHER
+    
+    @property
+    def cli(self):
+        return self.__CLI
         
     def run(self):
         self.watcher.start()
+
+    def interactive(self):
+        self.cli.start()
