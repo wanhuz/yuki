@@ -4,6 +4,12 @@ import shutil
 import os
 import logging
 
+logging.basicConfig(
+    filename="yuki.log", 
+    level=logging.DEBUG,
+    datefmt='%Y-%m-%d %H:%M:%S',
+    format='%(asctime)s - %(levelname)s - %(message)s')
+
 class Watcher:
 
     def __init__(self, watch_dir, dest_path, exts : list, record : Record):
@@ -31,7 +37,7 @@ class Watcher:
     def start(self):
         self.explore_directory(self.watch_dir)
 
-    #Explore file and send mkv to remote drive. Breaks if folder/dir is empty
+    #Explore file and copy from src to dest. Breaks if folder/dir is empty
     def explore_directory(self, folder):
         for file in os.listdir(folder):
             
