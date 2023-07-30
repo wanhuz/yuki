@@ -35,9 +35,9 @@ class Cli:
                     self.print_all_screen()
 
     def print_all_screen(self):
-        self.open()
+        self.record.open()
         self.record.print_all()
-        self.close()
+        self.record.close()
 
     def add_filename_screen(self):
         instruction = '\nAdd filename to record: \n'
