@@ -31,6 +31,8 @@ class Cli:
                     self.remove_filename_screen()
                 case "f":
                     self.search_filename_screen()
+                case "p":
+                    self.record.print_all()
 
 
     def add_filename_screen(self):
