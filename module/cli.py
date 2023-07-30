@@ -16,7 +16,7 @@ class Cli:
         
         while (True):
             instructions = "Choose an options:\n\n"
-            options = "a) Add new entry \n d) Remove entry \n f) Find entry \n e) Exit\n"
+            options = "a) Add new entry \n d) Remove entry \n f) Find entry \n p) Print all \n e) Exit\n"
 
             print(instructions, options)
 
@@ -32,8 +32,12 @@ class Cli:
                 case "f":
                     self.search_filename_screen()
                 case "p":
-                    self.record.print_all()
+                    self.print_all_screen()
 
+    def print_all_screen(self):
+        self.open()
+        self.record.print_all()
+        self.close()
 
     def add_filename_screen(self):
         instruction = '\nAdd filename to record: \n'
