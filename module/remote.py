@@ -20,7 +20,7 @@ class Remote:
             time.sleep(1)
 
         if (p.returncode):
-            logging.debug("Error, : " + "rclone copto" + " exited with non-zero status, filename: " + path_to_file + ", errorcode: " + str(p.returncode))
+            logging.debug("Error, : " + "rclone copyto" + " exited with non-zero status, filename: " + path_to_file + ", errorcode: " + str(p.returncode))
             logging.debug("STDOUT: " + str(p.stdout))
             logging.debug("Stderr:" + str(p.stderr))
             logging.debug("Rclone command: " + "' " + copy_rclone_command + " '")
