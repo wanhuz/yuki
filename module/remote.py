@@ -18,8 +18,8 @@ class Remote:
 
     @staticmethod
     def generate_rclone_copy_commands(path_to_file, path_to_dest):
-        path_to_file = f'"{path_to_file}"'
-        path_to_dest =  f'"{path_to_dest}"'
+        path_to_file = path_to_file
+        path_to_dest =  path_to_file
         log_command = "--log-file=yuki_rclone.log"
         copy_rclone_command = ['rclone', 'copyto', str(path_to_file), str(path_to_dest), str(log_command)]
         return copy_rclone_command
