@@ -17,5 +17,8 @@ class Remote:
         subprocess.run(copy_rclone_command)
 
     def generate_rclone_copy_commands(path_to_file, path_to_dest):
-        copy_rclone_command = ['rclone', 'copyto', "\"", path_to_file, " ", "\"", path_to_dest, "\"", " --log-file=yuki_rclone.log"]
+        path_to_file = "\"" + path_to_file + "\""
+        path_to_dest =   " " + "\"" + path_to_dest, "\""
+        log_command = " --log-file=yuki_rclone.log"
+        copy_rclone_command = ['rclone', 'copyto', path_to_file, path_to_dest, log_command]
         return copy_rclone_command
