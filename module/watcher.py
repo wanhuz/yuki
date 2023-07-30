@@ -55,7 +55,8 @@ class Watcher:
                     logging.info("Copying " + file + " over to destination directory")
         
                     path_to_file = folder + str(file)
-                    Remote.copyto(path_to_file, self.dest_path)
+                    path_to_dest_file = self.dest_path + str(file)
+                    Remote.copyto(path_to_file, path_to_dest_file)
                     continue
 
                 # Check if file or directory
