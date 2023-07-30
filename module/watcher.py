@@ -1,6 +1,6 @@
 from module.record import Record
 from module.util import Util
-import shutil
+from module.remote import Remote
 import os
 import logging
 
@@ -55,7 +55,7 @@ class Watcher:
                     logging.info("Copying " + file + " over to destination directory")
         
                     src_filepath = folder + str(file)
-                    shutil.copy(src_filepath, self.dest_path)
+                    Remote.copyto(src_filepath, self.dest_path)
                     continue
 
                 # Check if file or directory
