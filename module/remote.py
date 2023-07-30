@@ -10,8 +10,12 @@ logging.basicConfig(
 class Remote:
 
     @staticmethod
-    def copyto(src_path, dest_path):
-        logging.info('Rclone copying ' + src_path + " to " + dest_path)
+    def copyto(path_to_file, path_to_dest):
+        logging.info('Rclone copying ' + path_to_file + " to " + path_to_dest)
 
-        copy_rclone_command = ['rclone', 'copyto', "\"", src_path, " ", "\"", dest_path, "\"", " --log-file=yuki_rclone.log"]
+        copy_rclone_command = Remote.generate_rclone_copy_commands(path_to_file, path_to_dest)
         subprocess.run(copy_rclone_command)
+
+    def generate_rclone_copy_commands(path_to_file, path_to_dest):
+        copy_rclone_command = ['rclone', 'copyto', "\"", path_to_file, " ", "\"", path_to_dest, "\"", " --log-file=yuki_rclone.log"]
+        return copy_rclone_command

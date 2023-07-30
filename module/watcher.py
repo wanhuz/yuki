@@ -54,8 +54,9 @@ class Watcher:
                 if (self.filename_match_allowed_exts(file)): #if file is mkv, download
                     logging.info("Copying " + file + " over to destination directory")
         
-                    src_filepath = folder + str(file)
-                    Remote.copyto(src_filepath, self.dest_path)
+                    path_to_file = folder + str(file)
+                    path_to_dest_file = self.dest_path + str(file)
+                    Remote.copyto(path_to_file, path_to_dest_file)
                     continue
 
                 # Check if file or directory
