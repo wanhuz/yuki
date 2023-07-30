@@ -3,6 +3,14 @@ from module.util import Util
 
 class TestExtension(unittest.TestCase):
 
+    def test_is_file(self):
+        test_file = 'test.txt'
+        self.assertTrue(Util.is_file(test_file))
+
+    def test_is_not_file(self):
+        test_dir = 'folderA'
+        self.assertFalse(Util.is_file(test_dir))
+
     def test_valid_filename(self):
         valid_filename = "photo.jpg"
         self.assertEqual(Util.get_extension(valid_filename), ".jpg")

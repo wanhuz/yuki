@@ -11,6 +11,7 @@ class Util:
 
     @staticmethod
     def is_file(filename):
-        if path.isfile(filename):
+        # Check whether it is a file based on filename, not by whether it exist or not on system
+        if (Util.get_extension(filename)): 
             return True
         return False

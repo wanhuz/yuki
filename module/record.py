@@ -60,6 +60,5 @@ class Record:
         rows = self.db_table.rows_where("name = ?", [filename])
     
         if any(rows):
-            logging.info('Match found of filename: ' + filename)
             return True
         return False

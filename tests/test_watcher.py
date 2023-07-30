@@ -8,9 +8,9 @@ class TestWatcher(unittest.TestCase):
     def setUp(self):
         allowed_exts = ['.jpg', '.mkv', '.avi']
         self.record = Record('test.db')
+        self.watcher = Watcher('', '', allowed_exts, self.record)
         self.record.open()
         self.record.close()
-        self.watcher = Watcher('', '', allowed_exts, self.record)
 
     def tearDown(self):
         os.remove('test.db')
@@ -30,16 +30,16 @@ class TestWatcher(unittest.TestCase):
 
         self.assertFalse(self.watcher.filename_match_allowed_exts(filename_valid_exts_but_not_match))
 
-    def test_valid_new_file_is_new_file_obj(self):
+    def test_valid_new_file_is_new_file(self):
         valid_new_filename = "episode 4.mkv"
 
-        self.assertTrue(self.watcher.is_new_file_obj(valid_new_filename))
+        self.assertTrue(self.watcher.is_new_file(valid_new_filename))
 
-    def test_valid_old_file_is_new_file_obj(self):
+    def test_valid_old_file_is_new_file(self):
         valid_old_filename = "episode 4.mkv"
 
         self.record.open()
         self.record.store(valid_old_filename)
         self.record.close()
 
-        self.assertFalse(self.watcher.is_new_file_obj(valid_old_filename))
+        self.assertFalse(self.watcher.is_new_file(valid_old_filename))
