@@ -14,7 +14,7 @@ logging.basicConfig(
 
 class Controller:
 
-    def __init__(self, record_path, src_path, dest_path, allowed_exts_list):
+    def __init__(self):
         load_dotenv()
 
         record_path = os.getenv("RECORD_PATH")
