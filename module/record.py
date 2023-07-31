@@ -31,9 +31,22 @@ class Record:
         
     def print_all(self):
         filenames = self.db_table.rows
+
         for filename in filenames:
             print(filename)
 
+    def print_last_50(self):
+        MAX_PRINT = 50
+        i = 0
+
+        filenames = self.db_table.rows
+
+        for filename in filenames:
+            print(filename)
+            i += 1
+            if (i > MAX_PRINT):
+                break
+            
     def search(self, name) -> list:
         searchedList = []
 

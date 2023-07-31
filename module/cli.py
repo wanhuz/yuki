@@ -33,10 +33,17 @@ class Cli:
                     self.search_filename_screen()
                 case "p":
                     self.print_all_screen()
+                case "t":
+                    self.print_last_50_screen()
 
     def print_all_screen(self):
         self.record.open()
         self.record.print_all()
+        self.record.close()
+
+    def print_last_50_screen(self):
+        self.record.open()
+        self.record.print_last_50()
         self.record.close()
 
     def add_filename_screen(self):
