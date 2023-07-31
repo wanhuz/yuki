@@ -19,7 +19,8 @@ class Util:
 
     @staticmethod
     def generate_path_to_dest_file(dest_path, filename):
-        path_to_dest_file = dest_path + Util.sanitize_filename_for_rclone(sanitize_filename(filename))
+        sanitized_filename = sanitize_filename(str(filename))
+        path_to_dest_file = dest_path + Util.escape_quotes_parser(sanitized_filename)
 
         return path_to_dest_file
 
@@ -29,14 +30,19 @@ class Util:
         return path_to_file
     
     @staticmethod
-    def sanitize_filename_for_rclone(filename):
-        invalid_chars = ["'", '"'] # ' interfere with rclone commands
-        safe_char = "i" # Best safest character to replace with
+    # Escape quote inside shell commands
+    def escape_quotes_parser(filename):
+        single_quote = "'"
+        double_quote = '"' # ' interfere with rclone commands
+        escape_single_quote = r"'\''" # Best safest character to replace with
+        escape_double_quote = r'"\""'
 
-        sanitized_filename = str(filename)
+        if (single_quote in filename):
+            sanitized_filename = filename.replace(single_quote, escape_single_quote)
+        elif (double_quote in filename):
+            sanitized_filename = filename.replace(double_quote, escape_double_quote)
+        else:
+            sanitized_filename = filename
 
-        for invalid_char in invalid_chars:
-            sanitized_filename = sanitized_filename.replace(invalid_char, safe_char)
-
-        sanitized_filename = sanitize_filename(sanitized_filename)
         return sanitized_filename
+    

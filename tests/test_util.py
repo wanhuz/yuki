@@ -29,10 +29,10 @@ class TestExtension(unittest.TestCase):
 
     def test_generate_path_to_dest_file(self):
         raw_filename = "Movie episode 1.mkv"
-        valid_sanitized_filename = "Movie episode 1.mkv"
+        valid_filename = "Movie episode 1.mkv"
         dest_path = 'dest/'
-        valid_sanitized_path_to_dest_file = dest_path + valid_sanitized_filename
-
+        
+        valid_sanitized_path_to_dest_file = dest_path + valid_filename
         sanitized_path_to_dest_file = Util.generate_path_to_dest_file(dest_path, raw_filename)
 
         self.assertEqual(sanitized_path_to_dest_file, valid_sanitized_path_to_dest_file)
@@ -40,24 +40,24 @@ class TestExtension(unittest.TestCase):
     def test_generate_path_to_src_file(self):
         valid_filename = "Movie episode 1.mkv"
         src_path = 'src/'
+        
         valid_sanitized_path_to_src_file = src_path + valid_filename
-
         path_to_src_file = Util.generate_path_to_src_file(src_path, valid_filename)
 
         self.assertEqual(path_to_src_file, valid_sanitized_path_to_src_file)
 
-    def test_sanitize_filename_for_rclone_escape_single_quote(self):
-        valid_filename = "Movie episode i1.mkv"
-        raw_filename = "Movie episode '1.mkv"
+    def test_escape_quotes_parser_single_quote(self):
+        valid_filename = r"Episode '\''4"
+        raw_filename = "Episode '4"
 
-        sanitized_filename = Util.sanitize_filename_for_rclone(raw_filename)
+        sanitized_filename = Util.escape_quotes_parser(raw_filename)
 
         self.assertEqual(sanitized_filename, valid_filename)
 
-    def test_sanitize_filename_for_rclone_escape_double_quote(self):
-        valid_filename = "Movie episode i1.mkv"
-        raw_filename = 'Movie episode "1.mkv'
+    def test_escape_quotes_parser_double_quote(self):
+        valid_filename = r'Episode "\""4'
+        raw_filename = 'Episode "4'
 
-        sanitized_filename = Util.sanitize_filename_for_rclone(raw_filename)
+        sanitized_filename = Util.escape_quotes_parser(raw_filename)
 
         self.assertEqual(sanitized_filename, valid_filename)
