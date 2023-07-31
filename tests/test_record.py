@@ -13,39 +13,6 @@ class TestRecord(unittest.TestCase):
         self.record.close()
         os.remove('test.db')
 
-    def test_valid_search_store(self):
-        valid_filename_suffix = "Episode "
-        valid_search_filename = "Episode " + str(random.randint(1, 9))
-
-        for i in range(1, 10):
-            self.record.store(valid_filename_suffix + str(i))
-
-        search_result = self.record.search(valid_search_filename)
-        first_search_result_name = search_result[0]['name']
-
-        self.assertEqual(first_search_result_name, valid_search_filename)
-
-    def test_invalid_search(self):
-        valid_filename_suffix = "Episode "
-        invalid_search_filename = "Episode 100"
-
-        for i in range(1, 10):
-            self.record.store(valid_filename_suffix + str(i))
-
-        search_result = self.record.search(invalid_search_filename)
-
-        self.assertFalse(search_result)
-
-    def test_delete_all(self):
-        valid_filename = "Episode 4"
-
-        for i in range(1, 10):
-            self.record.store(valid_filename)
-
-        self.record.delete_all(valid_filename)
-
-        self.assertFalse(self.record.search(valid_filename))
-
     def test_is_match(self):
         valid_matching_filename = "Episode " + str(random.randint(1, 9))
 
@@ -63,11 +30,35 @@ class TestRecord(unittest.TestCase):
 
     def test_delete_contains(self):
         valid_filename_suffix = "Episode "
-        valid_filename = "Episode 4"
+        valid_filename = "Episode " + str(random.randint(1, 9))
 
         for i in range(1, 10):
             self.record.store(valid_filename_suffix + str(i))
 
         self.record.delete_contains(valid_filename_suffix)
 
-        self.assertFalse(self.record.search(valid_filename))
+        self.assertFalse(self.record.search_contains(valid_filename))
+
+    def test_valid_search_contains(self):
+        valid_filename_contains = "Episode 2"
+        store_filenames = ['Episode 23', 'Episode 24']
+
+        for filename in store_filenames:
+            self.record.store(filename)
+
+        search_result = self.record.search_contains(valid_filename_contains)
+        search_result_count = len(search_result)
+
+        self.assertEqual(search_result_count, 2)
+
+    def test_invalid_search_contains(self):
+        invalid_filename_contains = "Episode 1"
+        store_filenames = ['Episode 23', 'Episode 24']
+
+        for filename in store_filenames:
+            self.record.store(filename)
+
+        search_result = self.record.search_contains(invalid_filename_contains)
+        search_result_count = len(search_result)
+
+        self.assertEqual(search_result_count, 0)

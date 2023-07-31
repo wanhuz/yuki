@@ -46,12 +46,13 @@ class Record:
             i += 1
             if (i > MAX_PRINT):
                 break
-            
-    def search(self, name) -> list:
+    
+    def search_contains(self, name) -> list:
+        search_pattern = f"%{name}%"
         searchedList = []
 
-        rows = self.db_table.rows_where("name = ?", [name])
-        check_for_empty = self.db_table.rows_where("name = ?", [name])
+        rows = self.db_table.rows_where("name LIKE ?", [search_pattern])
+        check_for_empty = self.db_table.rows_where("name LIKE ?", [search_pattern])
 
         try:
             next(check_for_empty)
@@ -60,14 +61,6 @@ class Record:
         
         searchedList = [row for row in rows] #Convert to list
         return searchedList
-
-    def delete_all(self, name):
-        rows = self.db_table.rows_where("name = ?", [name])
-        
-        for row in rows:
-            self.db_table.delete(row["rowid"])
-            
-        logging.info('Deleted ' + name)
     
     def is_match(self, filename) -> bool:
         rows = self.db_table.rows_where("name = ?", [filename])
