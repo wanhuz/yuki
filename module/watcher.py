@@ -17,7 +17,7 @@ class Watcher:
         self.__WATCH_DIR = watch_dir
         self.__EXTS = exts
         self.__RECORD = record
-        self.__DEST_PATH = dest_path # example: "\"/home/user/test\"" with quote
+        self.__DEST_PATH = dest_path
         self.__DEBUG_MODE = debug_mode
 
     @property
