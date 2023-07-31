@@ -33,11 +33,12 @@ class Util:
         return path_to_file
     
     @staticmethod
-    # Escape quote inside shell commands
+    # Escape quote inside bash as bash command is literal
     def escape_quotes_parser(filename):
+        # Solution: https://stackoverflow.com/a/48352047
         single_quote = "'"
-        double_quote = '"' # ' interfere with rclone commands
-        escape_single_quote = r"'\''" # Best safest character to replace with
+        double_quote = '"' 
+        escape_single_quote = r"'\''"
         escape_double_quote = r'"\""'
 
         if (single_quote in filename):
