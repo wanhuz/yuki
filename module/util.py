@@ -26,8 +26,10 @@ class Util:
 
     @staticmethod
     def generate_path_to_src_file(src_path, filename):
-        filename = Util.escape_quotes_parser(filename)
-        path_to_file = src_path + filename
+        escaped_filename = Util.escape_quotes_parser(filename)
+        escaped_src_path = Util.escape_quotes_parser(src_path)
+
+        path_to_file = escaped_src_path + escaped_filename
         return path_to_file
     
     @staticmethod
