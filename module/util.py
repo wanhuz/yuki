@@ -30,12 +30,13 @@ class Util:
     
     @staticmethod
     def sanitize_filename_for_rclone(filename):
-        invalid_chars = ["'"] # ' interfere with rclone commands
+        invalid_chars = ["'", '"'] # ' interfere with rclone commands
         safe_char = "i" # Best safest character to replace with
-        
-        sanitized_filename = str(sanitize_filename(filename))
+
+        sanitized_filename = str(filename)
 
         for invalid_char in invalid_chars:
             sanitized_filename = sanitized_filename.replace(invalid_char, safe_char)
 
+        sanitized_filename = sanitize_filename(sanitized_filename)
         return sanitized_filename
