@@ -40,10 +40,8 @@ class Record:
         i = 0
 
         filenames = self.db_table.rows_where(order_by="rowid desc")
-        filenames_reversed = [filename for filename in filenames]
-        filenames_reversed = filenames_reversed.reverse()
 
-        for filename in filenames_reversed:
+        for filename in filenames:
             print(filename)
             i += 1
             if (i > MAX_PRINT):
