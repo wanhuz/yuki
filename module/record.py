@@ -75,3 +75,12 @@ class Record:
         if any(rows):
             return True
         return False
+    
+    def delete_contains(self, name):
+        search_pattern = f"%{name}%"
+        rows = self.db_table.rows_where("name LIKE ?", [search_pattern])
+        
+        for row in rows:
+            self.db_table.delete(row["rowid"])
+            
+        logging.info('Deleted ' + name)

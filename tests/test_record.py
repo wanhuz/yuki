@@ -60,3 +60,14 @@ class TestRecord(unittest.TestCase):
         self.record.store(valid_matching_filename)
         
         self.assertFalse(self.record.is_match(invalid_matching_filenname))
+
+    def test_delete_contains(self):
+        valid_filename_suffix = "Episode "
+        valid_filename = "Episode 4"
+
+        for i in range(1, 10):
+            self.record.store(valid_filename_suffix + str(i))
+
+        self.record.delete_contains(valid_filename_suffix)
+
+        self.assertFalse(self.record.search(valid_filename))

@@ -29,6 +29,8 @@ class Cli:
                     self.add_filename_screen()
                 case "d":
                     self.remove_filename_screen()
+                case "c":
+                    self.remove_filename_contains_screen()
                 case "f":
                     self.search_filename_screen()
                 case "p":
@@ -91,6 +93,25 @@ class Cli:
                     
 
     def remove_filename_screen(self):
+        instruction = '\nInput filename to delete: \n'
+        options = '\nb) Back\ne) Exit\n'
+
+        while (True):
+            print(instruction, options)
+            user_input = input()
+
+            match user_input:
+                case "b":
+                    break
+                case "e":
+                    sys.exit(0)
+                case _:  
+                    self.record.open()
+                    self.record.delete_all(user_input)
+                    self.record.close()
+                    print('Successfully deleted ' + user_input)
+
+    def remove_filename_contains_screen(self):
         instruction = '\nSearch filename to delete: \n'
         options = '\nb) Back\ne) Exit\n'
 
