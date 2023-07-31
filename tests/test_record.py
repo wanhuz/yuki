@@ -21,9 +21,9 @@ class TestRecord(unittest.TestCase):
             self.record.store(valid_filename_suffix + str(i))
 
         search_result = self.record.search(valid_search_filename)
+        first_search_result_name = search_result[0]['name']
 
-        for search in search_result:
-            self.assertEqual(search['name'], valid_search_filename)
+        self.assertEqual(first_search_result_name, valid_search_filename)
 
     def test_invalid_search(self):
         valid_filename_suffix = "Episode "
@@ -34,8 +34,7 @@ class TestRecord(unittest.TestCase):
 
         search_result = self.record.search(invalid_search_filename)
 
-        for search in search_result:
-            self.assertFalse(search['name'], invalid_search_filename)
+        self.assertFalse(search_result)
 
     def test_delete_all(self):
         valid_filename = "Episode 4"
