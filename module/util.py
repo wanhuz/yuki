@@ -20,13 +20,14 @@ class Util:
     @staticmethod
     def generate_path_to_dest_file(dest_path, filename):
         sanitized_filename = sanitize_filename(str(filename))
+        
         path_to_dest_file = dest_path + Util.escape_quotes_parser(sanitized_filename)
-
         return path_to_dest_file
 
     @staticmethod
     def generate_path_to_src_file(src_path, filename):
-        path_to_file = src_path + str(filename)
+        filename = Util.escape_quotes_parser(filename)
+        path_to_file = src_path + filename
         return path_to_file
     
     @staticmethod
