@@ -4,3 +4,4 @@ move_once
 yuki
 yuki.log
 history.db
+.coverage

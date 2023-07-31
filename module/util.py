@@ -1,4 +1,5 @@
 from os import path
+from pathvalidate import sanitize_filename
 
 class Util:
     @staticmethod
@@ -15,3 +16,25 @@ class Util:
         if (Util.get_extension(filename)): 
             return True
         return False
+
+    @staticmethod
+    def generate_path_to_dest_file(dest_path, filename):
+        path_to_dest_file = dest_path + Util.sanitize_filename_for_rclone(sanitize_filename(filename))
+
+        return path_to_dest_file
+
+    @staticmethod
+    def generate_path_to_src_file(src_path, filename):
+        path_to_file = src_path + str(filename)
+        return path_to_file
+    
+    @staticmethod
+    def sanitize_filename_for_rclone(filename):
+        invalid_chars = ["'"] # ' interfere with rclone commands
+        safe_char = ""
+        sanitized_filename = str(sanitize_filename(filename))
+
+        for invalid_char in invalid_chars:
+            sanitized_filename = sanitized_filename.replace(invalid_char, safe_char)
+
+        return sanitized_filename
