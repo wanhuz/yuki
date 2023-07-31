@@ -10,8 +10,8 @@ To run
 1. Install Python 3.7 or above
 2. Clone this repository
 3. Run "pip install -r requirements.txt" inside this directory
-4. Copy .env.example into .env and edit it to your specifications.
-5. Execute using python, "python yuki.py run" to run the script or "python yuki.py cli" to enter interactive session (view record, delete, etc)
+4. Copy .env.example into .env and edit it to your specifications. (Make sure src_path and dest_path exists!)
+6. Execute using python, "python yuki.py run" to run the script or "python yuki.py cli" to enter interactive session (view record, delete, etc)
 
 Things to take note
 
