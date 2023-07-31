@@ -16,7 +16,7 @@ class Cli:
         
         while (True):
             instructions = "Choose an options:\n\n"
-            options = "a) Add new entry \n d) Remove entry \n f) Find entry \n p) Print all \n e) Exit\n"
+            options = "a) Add new entry \n d) Remove entry \n f) Find entry \n p) Print all \n t) Print last 50 record \n e) Exit\n"
 
             print(instructions, options)
 
