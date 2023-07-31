@@ -31,7 +31,7 @@ class Util:
     @staticmethod
     def sanitize_filename_for_rclone(filename):
         invalid_chars = ["'"] # ' interfere with rclone commands
-        safe_char = ""
+        safe_char = "i"
         sanitized_filename = str(sanitize_filename(filename))
 
         for invalid_char in invalid_chars:
