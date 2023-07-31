@@ -39,7 +39,7 @@ class Record:
         MAX_PRINT = 50
         i = 0
 
-        filenames = self.db_table.rows
+        filenames = self.db_table.rows_where(order_by="id desc")
 
         for filename in filenames:
             print(filename)
