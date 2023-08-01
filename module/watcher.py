@@ -44,31 +44,30 @@ class Watcher:
         self.explore_directory(self.watch_dir)
 
     #Explore file and copy from src to dest. Breaks if folder/dir is empty
-    def explore_directory(self, folder):
-        for filename in os.listdir(folder):
+    def explore_directory(self, src_path):
+        for filename in os.listdir(src_path):
 
-            if (Util.is_file(filename)):
+            if (Util.is_file(src_path, filename)):
                 is_new_file = self.is_new_file(filename)
+
+                self.record.open()
+                self.record.store(filename)
+                self.record.close()
 
                 if (is_new_file):
 
                     if (self.filename_match_allowed_exts(filename)):
-                        
-                        self.record.open()
-                        self.record.store(filename)
-                        self.record.close()
-
                         logging.info("Attempting to copy " + filename + " over to destination directory")
             
-                        path_to_file = Util.generate_path_to_src_file(folder, filename)
+                        path_to_file = Util.generate_path_to_src_file(src_path, filename)
                         path_to_dest_file = Util.generate_path_to_dest_file(self.dest_path, filename)
                         self.copy_once(path_to_file, path_to_dest_file, self.debug_mode)
 
                         logging.info('Finished copying for ' + filename)
                     
             else: 
-                    path_to_new_dir = folder + filename + "/"
-                    self.explore_directory(path_to_new_dir)
+                path_to_new_dir = src_path + filename + "/"
+                self.explore_directory(path_to_new_dir)
       
     
     def copy_once(self, path_to_file, path_to_dest_file, is_debug_mode):

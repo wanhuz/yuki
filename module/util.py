@@ -1,4 +1,5 @@
 from os import path
+from os.path import isfile
 from pathvalidate import sanitize_filename
 
 class Util:
@@ -9,13 +10,11 @@ class Util:
         if (extension):
             return extension.lower()
         return False # No extension
-
+    
     @staticmethod
-    def is_file(filename):
-        '''Return true if filename is a file through checking its extension. Extensions can be faked, e,g, .mkvd'''
-        if (Util.get_extension(filename)): 
-            return True
-        return False
+    def is_file(path, filename):
+        path_to_file = path + filename
+        return isfile(path_to_file)
 
     @staticmethod
     def generate_path_to_dest_file(dest_path, filename):

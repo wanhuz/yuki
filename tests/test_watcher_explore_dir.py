@@ -43,10 +43,25 @@ class TestWatcher(unittest.TestCase):
         self.assertTrue(file_exist_in_dest_dir)
      
     def test_explore_directory_copy_subdirectory_file(self):
-        src_subdir_path = self.src_path + 'folderB'
+        src_subdir_path = self.src_path + 'folderB/'
+        path_to_src_file = src_subdir_path + 'test.txt'
         os.mkdir(src_subdir_path)
 
-        path_to_src_file = src_subdir_path + '/test.txt'
+        open(path_to_src_file, 'w').close() # Create test file
+
+        # Debug mode use copy instead of Rclone
+        self.watcher.explore_directory(self.src_path) 
+
+        path_to_dest_file = self.dest_path + 'test.txt'
+        file_exist_in_dest_dir = os.path.isfile(path_to_dest_file)
+        self.assertTrue(file_exist_in_dest_dir)
+
+    def test_dotted_folder_explore_directory(self):
+        dotted_folder = '[C-W] Desert.Punk.2004 [DVD.718x480.AVC.Dual.Audio.AAC]/'
+        src_subdir_path = self.src_path + dotted_folder
+        path_to_src_file = src_subdir_path + 'test.txt'
+        os.mkdir(src_subdir_path)
+
         open(path_to_src_file, 'w').close() # Create test file
 
         # Debug mode use copy instead of Rclone
