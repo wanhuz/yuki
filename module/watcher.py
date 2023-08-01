@@ -52,11 +52,12 @@ class Watcher:
 
                 if (is_new_file):
 
-                    self.record.open()
-                    self.record.store(filename)
-                    self.record.close()
-
                     if (self.filename_match_allowed_exts(filename)):
+                        
+                        self.record.open()
+                        self.record.store(filename)
+                        self.record.close()
+
                         logging.info("Attempting to copy " + filename + " over to destination directory")
             
                         path_to_file = Util.generate_path_to_src_file(folder, filename)

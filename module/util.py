@@ -12,7 +12,7 @@ class Util:
 
     @staticmethod
     def is_file(filename):
-        # Check whether it is a file based on filename, not by whether it exist or not on system
+        '''Return true if filename is a file through checking its extension. Extensions can be faked, e,g, .mkvd'''
         if (Util.get_extension(filename)): 
             return True
         return False
