@@ -36,16 +36,15 @@ class Record:
             print(filename)
 
     def print_last_50(self):
-        MAX_PRINT = 50
-        i = 0
+        filenames = self.db_table.rows
+        filenames_list = [filename for filename in filenames]
 
-        filenames = self.db_table.rows_where(order_by="rowid desc")
-
-        for filename in filenames:
-            print(filename)
-            i += 1
-            if (i > MAX_PRINT):
-                break
+        if (len(filenames_list) > 50):
+            for filename in filenames_list[-51:]:
+                print(filename)
+        else:
+            for filename in filenames_list:
+                print(filename)
     
     def search_contains(self, name) -> list:
         search_pattern = f"%{name}%"
