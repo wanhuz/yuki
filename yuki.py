@@ -15,6 +15,9 @@ def main(*args):
     elif (args[0] == "cli"):
         controller = Controller()
         controller.interactive()
+    elif (args[0] == "dry-run"):
+        controller = Controller(dry_run = True)
+        controller.run()
     elif (args[0] == "--help"):
         print('Arguments: \n\nrun - execute yuki script\ncli - enter interactive session to view records, add or delete')
     else:

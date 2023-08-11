@@ -14,7 +14,7 @@ logging.basicConfig(
 
 class Controller:
 
-    def __init__(self):
+    def __init__(self, dry_run = False):
         load_dotenv()
 
         record_path = os.getenv("RECORD_PATH")
@@ -26,7 +26,8 @@ class Controller:
         self.__WATCHER = Watcher(src_path, 
                                  dest_path, 
                                  allowed_exts_list, 
-                                 self.__RECORD)
+                                 self.__RECORD,
+                                 dry_run = dry_run)
         self.__CLI = Cli(self.record)
     
     @property

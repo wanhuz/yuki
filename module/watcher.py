@@ -13,12 +13,13 @@ logging.basicConfig(
 
 class Watcher:
 
-    def __init__(self, watch_dir, dest_path, exts : list, record : Record, debug_mode = False):
+    def __init__(self, watch_dir, dest_path, exts : list, record : Record, debug_mode = False, dry_run = False):
         self.__WATCH_DIR = watch_dir
         self.__EXTS = exts
         self.__RECORD = record
         self.__DEST_PATH = dest_path
         self.__DEBUG_MODE = debug_mode
+        self.__DRY_RUN = dry_run
 
     @property
     def watch_dir(self):
@@ -39,6 +40,10 @@ class Watcher:
     @property
     def debug_mode(self):
         return self.__DEBUG_MODE
+    
+    @property
+    def dry_run(self):
+        return self.__DRY_RUN
 
     def start(self):
         self.explore_directory(self.watch_dir)
@@ -61,7 +66,8 @@ class Watcher:
             
                         path_to_file = Util.generate_path_to_src_file(src_path, filename)
                         path_to_dest_file = Util.generate_path_to_dest_file(self.dest_path, filename)
-                        self.copy_once(path_to_file, path_to_dest_file, self.debug_mode)
+                        if (not self.dry_run):
+                            self.copy_once(path_to_file, path_to_dest_file, self.debug_mode)
 
                         logging.info('Finished copying for ' + filename)
                     
