@@ -2,7 +2,6 @@ from module.record import Record
 from module.watcher import Watcher
 from module.cli import Cli
 import logging
-from pathvalidate import sanitize_filename
 from dotenv import load_dotenv
 import os
 

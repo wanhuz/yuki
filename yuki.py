@@ -19,7 +19,7 @@ def main(*args):
         controller = Controller(dry_run = True)
         controller.run()
     elif (args[0] == "--help"):
-        print('Arguments: \n\nrun - execute yuki script\ncli - enter interactive session to view records, add or delete')
+        print('Arguments: \n\nrun - execute yuki script\ncli - enter interactive session to view records, add or delete\ndry-run - create record file without copying anything')
     else:
         print('Invalid commands! Run with --help to view all commands')
 
