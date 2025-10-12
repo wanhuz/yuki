@@ -5,3 +5,4 @@ yuki
 yuki.log
 history.db
 .coverage
+env/

@@ -13,13 +13,14 @@ logging.basicConfig(
 
 class Watcher:
 
-    def __init__(self, watch_dir, dest_path, exts : list, record : Record, debug_mode = False, dry_run = False):
+    def __init__(self, watch_dir, dest_path, exts : list, record : Record, debug_mode = False, dry_run = False, file_transfer_tool = "rsync"):
         self.__WATCH_DIR = watch_dir
         self.__EXTS = exts
         self.__RECORD = record
         self.__DEST_PATH = dest_path
         self.__DEBUG_MODE = debug_mode
         self.__DRY_RUN = dry_run
+        self.__FILE_TRANSFER_TOOL = file_transfer_tool
 
     @property
     def watch_dir(self):
@@ -82,7 +83,7 @@ class Watcher:
             
             shutil.copy(path_to_file, path_to_dest_file)
         else:
-            Remote.copyto(path_to_file, path_to_dest_file)
+            Remote.copyto(path_to_file, path_to_dest_file, self.__FILE_TRANSFER_TOOL)
 
     def is_new_file(self, filename):
         '''Return True if file or directory does not exists in record'''

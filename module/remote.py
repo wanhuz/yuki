@@ -11,21 +11,33 @@ logging.basicConfig(
 class Remote:
 
     @staticmethod
-    def copyto(path_to_file, path_to_dest):
+    def copyto(path_to_file, path_to_dest, file_transfer_tool = "rsync"):
 
-        copy_rclone_command = Remote.generate_rclone_copy_commands(path_to_file, path_to_dest)
-        p = subprocess.Popen(copy_rclone_command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
+        if (file_transfer_tool == "rsync"):
+            copy_command = Remote.generate_rsync_copy_commands(path_to_file, path_to_dest)
+        else:
+            copy_command = Remote.generate_rclone_copy_commands(path_to_file, path_to_dest)
+
+        p = subprocess.Popen(copy_command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
 
         while p.poll() is None:
             time.sleep(1)
 
         if (p.returncode):
-            logging.debug("Error, : " + "rclone copyto" + " exited with non-zero status, filename: " + path_to_file + ", errorcode: " + str(p.returncode))
+            logging.debug("Error, : " + file_transfer_tool + " exited with non-zero status, filename: " + path_to_file + ", errorcode: " + str(p.returncode))
             logging.debug("STDOUT: " + str(p.stdout))
             logging.debug("Stderr:" + str(p.stderr))
-            logging.debug("Rclone command: " + "' " + copy_rclone_command + " '")
+            logging.debug("Error command: " + "' " + copy_command + " '")
 
     @staticmethod
     def generate_rclone_copy_commands(path_to_file, path_to_dest):
         copy_rclone_command = "rclone copyto " + "'" + path_to_file + "' " + "'" + path_to_dest + "'" + " --log-file=yuki_rclone.log"
         return copy_rclone_command
+    
+    @staticmethod
+    def generate_rsync_copy_commands(path_to_file, path_to_dest):
+        copy_rsync_command = (
+            f"rsync -av --progress --log-file=yuki_rsync.log "
+            f"'{path_to_file}' '{path_to_dest}'"
+        )
+        return copy_rsync_command
