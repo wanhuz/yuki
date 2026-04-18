@@ -21,7 +21,8 @@ class Remote:
             case "rclone":
                 copy_command = Remote.generate_rclone_copy_commands(path_to_file, path_to_dest)
             case _:
-                raise ValueError("Invalid file transfer tool: " + file_transfer_tool)
+                logging.debug("Unknown file transfer tool: " + file_transfer_tool)
+                record.set_error(file_id, "Unknown file transfer tool: " + file_transfer_tool)
 
         p = subprocess.Popen(copy_command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
 

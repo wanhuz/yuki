@@ -21,12 +21,14 @@ class Controller:
         dest_path = os.getenv("DEST_PATH")
         allowed_exts_list = os.getenv("ALLOWED_EXTENSION_LIST")
         file_transfer_tool = os.getenv("FILE_TRANSFER_TOOL")
+        debug_mode = os.getenv("DEBUG_MODE")
 
         self.__RECORD = Record(record_path)
         self.__WATCHER = Watcher(src_path, 
                                  dest_path, 
                                  allowed_exts_list, 
                                  self.__RECORD,
+                                 debug_mode=debug_mode,
                                  dry_run = dry_run,
                                  file_transfer_tool = file_transfer_tool)
         self.__CLI = Cli(self.record)

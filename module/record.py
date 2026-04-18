@@ -86,7 +86,6 @@ class Record:
         self.db_table.update(id, {"status" : "Success", "message" : "", "timestamp" : datetime.datetime.now().timestamp()})
 
     def set_error(self, id, error_message):
-        print("ID: " + str(id))
         self.db_table.update(id, {"status" : "Error", "message" : error_message, "timestamp" : datetime.datetime.now().timestamp()})
 
     def retry(self, id):

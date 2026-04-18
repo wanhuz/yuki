@@ -5,6 +5,7 @@ import sqlite3
 # ── Page config ────────────────────────────────────────────────────────────────
 DB_PATH = "../history.db"
 
+
 st.set_page_config(
     page_title="Yuki Transfer",
     page_icon="✦",
@@ -14,18 +15,18 @@ st.set_page_config(
 # ── Custom CSS ─────────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Epilogue:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Epilogue:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
-    --cream:   #faf8f4;
-    --warm:    #f2ede4;
-    --border:  #e0d9ce;
-    --ink:     #1a1714;
-    --muted:   #8a8078;
-    --accent:  #c0622a;
-    --accent2: #2a6b8a;
-    --success: #3a7d5c;
-    --display: 'Playfair Display', serif;
+    --cream:   #f2eff7;
+    --warm:    #e8e2f2;
+    --border:  #cfc6e4;
+    --ink:     #1a1520;
+    --muted:   #9088a0;
+    --accent:  #6b5b95;
+    --accent2: #4a7a8a;
+    --success: #7a4a6a;
+    --display: 'Cormorant Garamond', serif;
     --body:    'Epilogue', sans-serif;
     --mono:    'JetBrains Mono', monospace;
 }
@@ -41,7 +42,6 @@ html, body, [class*="css"] {
     max-width: 1300px;
 }
 
-/* ── Header ── */
 .page-header {
     display: flex;
     align-items: flex-end;
@@ -50,14 +50,14 @@ html, body, [class*="css"] {
 }
 .page-title {
     font-family: var(--display);
-    font-size: 3rem;
+    font-size: 3.2rem;
     font-weight: 700;
     color: var(--ink);
     letter-spacing: -0.02em;
     line-height: 1;
     margin: 0;
 }
-.page-title em { color: var(--accent); font-style: italic; }
+.page-title em { color: var(--accent2); font-style: italic; }
 .page-badge {
     font-family: var(--mono);
     font-size: 0.65rem;
@@ -71,11 +71,10 @@ html, body, [class*="css"] {
 }
 .header-rule {
     height: 2px;
-    background: linear-gradient(90deg, var(--accent) 0%, var(--border) 55%, transparent 100%);
+    background: linear-gradient(90deg, var(--accent2) 0%, var(--accent) 40%, var(--border) 70%, transparent 100%);
     margin: 1rem 0 2.5rem;
 }
 
-/* ── Stat cards ── */
 .stat-row {
     display: flex;
     gap: 1px;
@@ -113,13 +112,12 @@ html, body, [class*="css"] {
 }
 .stat-value {
     font-family: var(--display);
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: 600;
     color: var(--ink);
     line-height: 1;
 }
 
-/* ── Filter heading ── */
 .filter-heading {
     font-family: var(--mono);
     font-size: 0.62rem;
@@ -129,12 +127,11 @@ html, body, [class*="css"] {
     margin-bottom: 0.75rem;
 }
 
-/* ── Table wrapper ── */
 .table-shell {
     border: 1px solid var(--border);
     border-radius: 6px;
     overflow: hidden;
-    background: white;
+    background: #f7f4f0;
     margin-top: 1.5rem;
 }
 .table-topbar {
@@ -154,14 +151,13 @@ html, body, [class*="css"] {
 .row-pill {
     font-family: var(--mono);
     font-size: 0.65rem;
-    color: var(--accent);
-    border: 1px solid var(--accent);
+    color: var(--accent2);
+    border: 1px solid var(--accent2);
     padding: 0.18rem 0.65rem;
     border-radius: 20px;
     letter-spacing: 0.08em;
 }
 
-/* Streamlit widget labels */
 div[data-testid="stTextInput"] label,
 div[data-testid="stSelectbox"] label,
 div[data-testid="stMultiSelect"] label {
@@ -178,7 +174,15 @@ div[data-testid="stTextInput"] input {
     background: var(--cream) !important;
 }
 
-/* ── Footer ── */
+button[data-baseweb="tab"][aria-selected="true"] {
+    color: var(--accent2) !important;
+    border-bottom-color: var(--accent2) !important;
+}
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--warm); }
+::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 99px; }
+
 .footer {
     margin-top: 4rem;
     padding-top: 1rem;
@@ -190,7 +194,7 @@ div[data-testid="stTextInput"] input {
     color: var(--muted);
     letter-spacing: 0.08em;
 }
-.footer span { color: var(--accent); }
+.footer span { color: var(--accent2); }
 
 #MainMenu, footer, header { visibility: hidden; }
 </style>
@@ -240,14 +244,7 @@ st.markdown(f"""
     <div class="stat-label">Total Records</div>
     <div class="stat-value">{total_rows:,}</div>
   </div>
-  <div class="stat-card b2">
-    <div class="stat-label">Columns</div>
-    <div class="stat-value">{total_cols}</div>
-  </div>
-  <div class="stat-card b3">
-    <div class="stat-label">{sum_label}</div>
-    <div class="stat-value">{total_sum}</div>
-  </div>
+
 </div>
 """, unsafe_allow_html=True)
 
@@ -282,37 +279,53 @@ if not df.empty:
         filtered = filtered[filtered[filter_col] == selected]
 
     # ── Table ──────────────────────────────────────────────────────────────────
-    st.markdown(f"""
-    <div class="table-shell">
-      <div class="table-topbar">
-        <span class="table-name">Records</span>
-        <span class="row-pill">{len(filtered):,} rows</span>
-      </div>
-    </div>
-    """, unsafe_allow_html=True)
+    tab1, tab2 = st.tabs(["Records", "Logs"])
+
+    with tab1:
+        st.markdown(f"""
+        <div class="table-shell">
+        <div class="table-topbar">
+            <span class="table-name">Records</span>
+            <span class="row-pill">{len(filtered):,} rows</span>
+        </div>
+        </div>
+        """, unsafe_allow_html=True)
 
 
-    # st.dataframe(filtered, use_container_width=True, height=480)
+        # st.dataframe(filtered, use_container_width=True, height=480)
 
-    event = st.dataframe(
-        df,
-        on_select='rerun',
-        selection_mode='single-row'
-    )
+        event = st.dataframe(
+            df,
+            on_select='rerun',
+            selection_mode='multi-row'
+        )
 
-    if len(event.selection['rows']):
-        selected_row = event.selection['rows'][0]
-        record_id = df.iloc[selected_row]['id']
+        if len(event.selection['rows']):
+            selected_rows = event.selection['rows']
+            record_ids = df.iloc[selected_rows]['id'].tolist()
 
-        col1, col2 = st.columns([1, 5])
-        with col1:
-            if st.button("Delete", type="primary"):
-                conn = get_db()
-                conn.execute("DELETE FROM record WHERE id = ?", (int(record_id),))
-                conn.commit()
-                conn.close()
-                st.cache_data.clear()
-                st.rerun()
+            col1, col2 = st.columns([1, 5])
+            with col1:
+                if st.button(f"Delete ({len(record_ids)})", type="primary"):
+                    conn = get_db()
+                    conn.execute(f"DELETE FROM record WHERE id IN ({','.join('?' * len(record_ids))})", record_ids)
+                    conn.commit()
+                    conn.close()
+                    st.cache_data.clear()
+                    st.rerun()
+    with tab2:
+        if st.button("Refresh"):
+            st.cache_data.clear()
+        log_path = "../yuki.log"  # change this
+        try:
+            with open(log_path, "r") as f:
+                logs = f.readlines()
+
+            last_100 = "".join(logs[-100:][::-1])
+            st.code(last_100, language="log")
+        except FileNotFoundError:
+            st.warning(f"Log file not found: {log_path}")
+
 
 # ── Footer ─────────────────────────────────────────────────────────────────────
 st.markdown(f"""

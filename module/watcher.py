@@ -81,9 +81,11 @@ class Watcher:
         self.record.open()
 
         if (is_debug_mode):
-            logging.debug('Copying ' + path_to_file + ' to ' + path_to_dest_file)
+            logging.debug('Copying ' + path_to_file + ' to ' + path_to_dest_file + ' in debug mode')
             
             shutil.copy(path_to_file, path_to_dest_file)
+
+            self.record.mark_as_finished(file_id)
         else:
             Remote.copyto(self.record, file_id, path_to_file, path_to_dest_file, self.__FILE_TRANSFER_TOOL)
 
