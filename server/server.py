@@ -285,13 +285,13 @@ if not df.empty:
         filtered = filtered[filtered[filter_col] == selected]
 
     # ── Table ──────────────────────────────────────────────────────────────────
-    tab1, tab2, tab3, tab4 = st.tabs(["Records", "Logs", "Rclone Logs", "Rsync Logs"])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(["Records", "Logs", "Rclone Logs", "Rsync Logs", "Rsync Errors Logs"])
 
     with tab1:
 
         col_refresh, col_rest = st.columns([1, 5])
         with col_refresh:
-            if st.button("Refresh "):
+            if st.button("Refresh", key="refresh_table"):
                 st.cache_data.clear()
                 st.rerun()
 
@@ -351,6 +351,18 @@ if not df.empty:
         if st.button("Refresh", key="refresh_rsync"):
             st.cache_data.clear()
         log_path = "../yuki_rsync.log"  # change this
+        try:
+            with open(log_path, "r") as f:
+                logs = f.readlines()
+
+            last_100 = "".join(logs[-100:][::-1])
+            st.code(last_100, language="log")
+        except FileNotFoundError:
+            st.warning(f"Log file not found: {log_path}")
+    with tab5:
+        if st.button("Refresh", key="refresh_rsync_errors"):
+            st.cache_data.clear()
+        log_path = "../yuki_rsync_errors.log"  # change this
         try:
             with open(log_path, "r") as f:
                 logs = f.readlines()
