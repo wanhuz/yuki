@@ -60,6 +60,9 @@ class Watcher:
 
                     self.record.open()
                     file_id = self.record.store(filename)
+
+                    if (self.dry_run):
+                            self.record.mark_as_finished(file_id)
                     self.record.close()
 
                     if (self.filename_match_allowed_exts(filename)):
