@@ -48,7 +48,7 @@ class Remote:
     @staticmethod
     def generate_rsync_copy_commands(path_to_file, path_to_dest):
         copy_rsync_command = (
-            f"rsync -av --progress --log-file=yuki_rsync.log "
+            f"rsync -av --progress --partial --log-file=yuki_rsync.log "
             f"'{path_to_file}' '{path_to_dest}'"
         )
         return copy_rsync_command
