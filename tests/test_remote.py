@@ -16,8 +16,10 @@ class TestRemote(unittest.TestCase):
         valid_path_to_file = "/home/user/media/file.mkv"
         valid_path_to_dest_file = "/mnt/server/foldername/file.mkv"
         valid_rsync_copy_commands = (
-            f"rsync -av --progress --log-file=yuki_rsync.log "
-            f"'{valid_path_to_file}' '{valid_path_to_dest_file}'"
+            f"rsync -av --progress --partial "
+            f"--log-file=yuki_rsync.log --stats --itemize-changes "
+            f"'{valid_path_to_file}' '{valid_path_to_dest_file}' "
+            f"2>>yuki_rsync_errors.log"
         )
 
         rsync_copy_commands = Remote.generate_rsync_copy_commands(valid_path_to_file, valid_path_to_dest_file)
