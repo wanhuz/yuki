@@ -1,3 +1,4 @@
+import datetime
 
 import sqlite_utils
 import logging
@@ -20,14 +21,18 @@ class Record:
     
     def open(self):
         self.__DB = sqlite_utils.Database(self.__DB_FILENAME)
-        self.__DB_TABLE = self.__DB["filename"]
+        self.__DB_TABLE = self.__DB["record"]
     
     def close(self):
         self.__DB.close()
     
     def store(self, filename):
         logging.info('Storing ' + filename + ' into database')
-        self.db_table.insert({"name" : filename}, pk="rowid")
+        self.db_table.insert({"name" : filename, "status" : "Processing", "message" : "", "timestamp" : datetime.datetime.now().timestamp()}, pk="id")
+
+        id = self.db_table.last_pk
+
+        return id
         
     def print_all(self):
         filenames = self.db_table.rows
@@ -73,6 +78,16 @@ class Record:
         rows = self.db_table.rows_where("name LIKE ?", [search_pattern])
         
         for row in rows:
-            self.db_table.delete(row["rowid"])
+            self.db_table.delete(row["id"])
             
         logging.info('Deleted ' + name)
+
+    def mark_as_finished(self, id):
+        self.db_table.update(id, {"status" : "Success", "message" : "", "timestamp" : datetime.datetime.now().timestamp()})
+
+    def set_error(self, id, error_message):
+        print("ID: " + str(id))
+        self.db_table.update(id, {"status" : "Error", "message" : error_message, "timestamp" : datetime.datetime.now().timestamp()})
+
+    def retry(self, id):
+        self.db_table.delete(id)

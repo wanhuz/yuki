@@ -59,7 +59,7 @@ class Watcher:
                 if (is_new_file):
 
                     self.record.open()
-                    self.record.store(filename)
+                    file_id = self.record.store(filename)
                     self.record.close()
 
                     if (self.filename_match_allowed_exts(filename)):
@@ -68,7 +68,7 @@ class Watcher:
                         path_to_file = Util.generate_path_to_src_file(src_path, filename)
                         path_to_dest_file = Util.generate_path_to_dest_file(self.dest_path, filename)
                         if (not self.dry_run):
-                            self.copy_once(path_to_file, path_to_dest_file, self.debug_mode)
+                            self.copy_once(file_id, path_to_file,path_to_dest_file, self.debug_mode)
 
                         logging.info('Finished copying for ' + filename)
                     
@@ -77,13 +77,17 @@ class Watcher:
                 self.explore_directory(path_to_new_dir)
       
     
-    def copy_once(self, path_to_file, path_to_dest_file, is_debug_mode):
+    def copy_once(self, file_id, path_to_file, path_to_dest_file, is_debug_mode):
+        self.record.open()
+
         if (is_debug_mode):
             logging.debug('Copying ' + path_to_file + ' to ' + path_to_dest_file)
             
             shutil.copy(path_to_file, path_to_dest_file)
         else:
-            Remote.copyto(path_to_file, path_to_dest_file, self.__FILE_TRANSFER_TOOL)
+            Remote.copyto(self.record, file_id, path_to_file, path_to_dest_file, self.__FILE_TRANSFER_TOOL)
+
+        self.record.close()
 
     def is_new_file(self, filename):
         '''Return True if file or directory does not exists in record'''

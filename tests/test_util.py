@@ -21,8 +21,8 @@ class TestUtil(unittest.TestCase):
 
     def test_generate_path_to_dest_file(self):
         dest_path = 'dest/'
-        filename = "Movie episode 1.mkv"
-        valid_filename = "Movie episode 1.mkv"
+        filename = ".Chainsaw.Man.-.The.Movie.Reze.Arc.2025.1080p.GPLAY.WEB-DL.DUAL.DDP5.1.H.264-WADU.mkv"
+        valid_filename = ".Chainsaw.Man.-.The.Movie.Reze.Arc.2025.1080p.GPLAY.WEB-DL.DUAL.DDP5.1.H.264-WADU.mkv"
         valid_sanitized_path_to_dest_file = dest_path + valid_filename
 
         sanitized_path_to_dest_file = Util.generate_path_to_dest_file(dest_path, filename)
