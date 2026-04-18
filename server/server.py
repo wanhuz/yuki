@@ -1,12 +1,16 @@
 import streamlit as st
 import pandas as pd
 import sqlite3
-from os import getenv
+from dotenv import load_dotenv
+import os
+from pathlib import Path
 
 # ── Page config ────────────────────────────────────────────────────────────────
-DB_NAME = getenv("RECORD_PATH")
-DB_PATH = "../" + DB_NAME
+load_dotenv(dotenv_path=Path('../.env'))
 
+# Access variables via os.environ
+DB_PATH = os.getenv('RECORD_PATH')
+DB_PATH = f"../{DB_PATH}"
 
 st.set_page_config(
     page_title="Yuki Transfer",
