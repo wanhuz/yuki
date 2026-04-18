@@ -37,6 +37,7 @@ class Remote:
             logging.debug("Error command: " + "' " + copy_command + " '")
             record.set_error(file_id, error_msg)
         else:
+            logging.info("Command: " + "' " + copy_command + " '")
             logging.info("Copied " + path_to_file + " to " + path_to_dest)
             record.mark_as_finished(file_id)
 
