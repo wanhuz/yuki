@@ -305,14 +305,14 @@ if not df.empty:
         """, unsafe_allow_html=True)
 
         event = st.dataframe(
-            df,
+            filtered,
             on_select='rerun',
             selection_mode='multi-row'
         )
 
         if len(event.selection['rows']):
             selected_rows = event.selection['rows']
-            record_ids = df.iloc[selected_rows]['id'].tolist()
+            record_ids = filtered.iloc[selected_rows]['id'].tolist()
 
             col1, col2 = st.columns([1, 5])
             with col1:
