@@ -24,6 +24,8 @@ class Remote:
                 logging.debug("Unknown file transfer tool: " + file_transfer_tool)
                 record.set_error(file_id, "Unknown file transfer tool: " + file_transfer_tool)
 
+        logging.info("Command: " + "' " + copy_command + " '")
+
         p = subprocess.Popen(copy_command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
 
         while p.poll() is None:
@@ -37,7 +39,6 @@ class Remote:
             logging.debug("Error command: " + "' " + copy_command + " '")
             record.set_error(file_id, error_msg)
         else:
-            logging.info("Command: " + "' " + copy_command + " '")
             logging.info("Copied " + path_to_file + " to " + path_to_dest)
             record.mark_as_finished(file_id)
 
