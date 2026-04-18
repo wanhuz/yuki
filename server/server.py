@@ -288,17 +288,21 @@ if not df.empty:
     tab1, tab2 = st.tabs(["Records", "Logs"])
 
     with tab1:
+
+        col_refresh, col_rest = st.columns([1, 5])
+        with col_refresh:
+            if st.button("Refresh "):
+                st.cache_data.clear()
+                st.rerun()
+
         st.markdown(f"""
-        <div class="table-shell">
+        <div class="table-shell" style="margin-top: 0;">
         <div class="table-topbar">
             <span class="table-name">Records</span>
             <span class="row-pill">{len(filtered):,} rows</span>
         </div>
         </div>
         """, unsafe_allow_html=True)
-
-
-        # st.dataframe(filtered, use_container_width=True, height=480)
 
         event = st.dataframe(
             df,
