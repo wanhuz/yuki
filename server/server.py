@@ -226,7 +226,7 @@ def get_db():
 df = load_data()
 
 df['timestamp'] = pd.to_datetime(df['timestamp'], unit='s').dt.strftime('%d/%m/%Y %I:%M:%S %p')
-
+df = df.sort_values('id', ascending=False).reset_index(drop=True)
 
 # ── Header ─────────────────────────────────────────────────────────────────────
 st.markdown("""
