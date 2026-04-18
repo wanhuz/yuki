@@ -1,9 +1,11 @@
 import streamlit as st
 import pandas as pd
 import sqlite3
+from os import getenv
 
 # ── Page config ────────────────────────────────────────────────────────────────
-DB_PATH = "../history.db"
+DB_NAME = getenv("RECORD_PATH")
+DB_PATH = "../" + DB_NAME
 
 
 st.set_page_config(
