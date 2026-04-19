@@ -52,7 +52,7 @@ class Remote:
         copy_rsync_command = (
             f"rsync -av --progress --partial "
             f"--log-file=yuki_rsync.log --stats --itemize-changes "
-            f"--append-verify --timeout=60 "
+            f"--append-verify --timeout=60 --delay-updates "
             f"'{path_to_file}' '{path_to_dest}' "
             f">> yuki_rsync.log 2>&1"
         )
