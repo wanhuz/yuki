@@ -23,24 +23,42 @@ class Remote:
             case _:
                 logging.debug("Unknown file transfer tool: " + file_transfer_tool)
                 record.set_error(file_id, "Unknown file transfer tool: " + file_transfer_tool)
+                return
 
-        logging.info("Command: " + "' " + copy_command + " '")
+        logging.info(f"Command: {copy_command}")
 
-        p = subprocess.Popen(copy_command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
+        p = subprocess.Popen(
+            copy_command,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            shell=True,
+            text=True
+        )
 
-        while p.poll() is None:
-            time.sleep(1)
+        try:
+            stdout, _ = p.communicate(timeout=3600)  # 1 hour
+        except subprocess.TimeoutExpired:
+            p.kill()
+            stdout, _ = p.communicate()  # clean up remaining output
+            record.set_error(file_id, "Transfer timed out")
+            return
 
-        if (p.returncode):
-            error_msg = "Error, : " + file_transfer_tool + " exited with non-zero status, filename: " + path_to_file + ", errorcode: " + str(p.returncode)
+        return_code = p.returncode
+
+        if return_code != 0:
+            error_msg = (
+                f"Error: {file_transfer_tool} exited with non-zero status "
+                f"filename: {path_to_file}, errorcode: {return_code}"
+            )
             logging.debug(error_msg)
-            logging.debug("STDOUT: " + str(p.stdout))
-            logging.debug("Stderr:" + str(p.stderr))
-            logging.debug("Error command: " + "' " + copy_command + " '")
+            logging.debug("STDOUT: " + stdout)
+            logging.debug("Error command: " + copy_command)
             record.set_error(file_id, error_msg)
+            return
         else:
-            logging.info("Copied " + path_to_file + " to " + path_to_dest)
+            logging.info(f"Copied {path_to_file} to {path_to_dest}")
             record.mark_as_finished(file_id)
+            return
 
     @staticmethod
     def generate_rclone_copy_commands(path_to_file, path_to_dest):
