@@ -68,9 +68,9 @@ class Remote:
     @staticmethod
     def generate_rsync_copy_commands(path_to_file, path_to_dest):
         copy_rsync_command = (
-            f"rsync -av --progress --partial "
+            f"rsync -av --progress "
             f"--log-file=yuki_rsync.log --stats --itemize-changes "
-            f"--timeout=60 --delay-updates "
+            f"--timeout=60 "
             f"'{path_to_file}' '{path_to_dest}' "
             f">> yuki_rsync.log 2>&1"
         )
