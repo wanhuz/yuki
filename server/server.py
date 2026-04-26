@@ -285,7 +285,7 @@ if not df.empty:
         filtered = filtered[filtered[filter_col] == selected]
 
     # ── Table ──────────────────────────────────────────────────────────────────
-    tab1, tab2, tab3, tab4, tab5 = st.tabs(["Records", "Logs", "Rclone Logs", "Rsync Logs", "Rsync Errors Logs"])
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["Records", "Events", "Logs", "Rclone Logs", "Rsync Logs", "Rsync Errors Logs"])
 
     with tab1:
 
@@ -324,6 +324,36 @@ if not df.empty:
                     st.cache_data.clear()
                     st.rerun()
     with tab2:
+        conn = get_db()
+        logs_df = pd.read_sql_query("SELECT * FROM logs", conn)
+        conn.close()
+
+        st.markdown("### Events Over Time")
+
+        if not logs_df.empty:
+
+            logs_df['timestamp'] = logs_df['timestamp'].astype('int64')
+
+            logs_df['timestamp'] = pd.to_datetime(logs_df['timestamp'], unit='s')
+
+            logs_df['time_group'] = logs_df['timestamp'].dt.floor('min')
+
+            time_series = (
+                logs_df
+                .groupby(['time_group', 'event'])
+                .size()
+                .unstack(fill_value=0)
+                .sort_index()  # important for correct chart order
+            )
+
+            st.line_chart(time_series)
+
+            st.dataframe(
+                logs_df.sort_values("timestamp", ascending=False),
+                use_container_width=True
+            )
+
+    with tab3:
         if st.button("Refresh", key="refresh"):
             st.cache_data.clear()
         log_path = "../yuki.log"  # change this
@@ -335,7 +365,7 @@ if not df.empty:
             st.code(last_100, language="log")
         except FileNotFoundError:
             st.warning(f"Log file not found: {log_path}")
-    with tab3:
+    with tab4:
         if st.button("Refresh", key="refresh_rclone"):
             st.cache_data.clear()
         log_path = "../yuki_rclone.log"  # change this
@@ -347,7 +377,7 @@ if not df.empty:
             st.code(last_100, language="log")
         except FileNotFoundError:
             st.warning(f"Log file not found: {log_path}")
-    with tab4:
+    with tab5:
         if st.button("Refresh", key="refresh_rsync"):
             st.cache_data.clear()
         log_path = "../yuki_rsync.log"  # change this
@@ -359,7 +389,7 @@ if not df.empty:
             st.code(last_100, language="log")
         except FileNotFoundError:
             st.warning(f"Log file not found: {log_path}")
-    with tab5:
+    with tab6:
         if st.button("Refresh", key="refresh_rsync_errors"):
             st.cache_data.clear()
         log_path = "../yuki_rsync_errors.log"  # change this

@@ -9,3 +9,5 @@ env/
 *.log
 envlin/
 locks/
+src/
+dest/

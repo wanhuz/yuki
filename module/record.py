@@ -19,9 +19,14 @@ class Record:
     def db_table(self):
         return self.__DB_TABLE
     
+    @property
+    def db_table_logs(self):
+        return self.__DB_TABLE_LOGS
+    
     def open(self):
         self.__DB = sqlite_utils.Database(self.__DB_FILENAME)
         self.__DB_TABLE = self.__DB["record"]
+        self.__DB_TABLE_LOGS = self.__DB["logs"]
     
     def close(self):
         self.__DB.close()
@@ -82,11 +87,30 @@ class Record:
             
         logging.info('Deleted ' + name)
 
+    def _log_event(self, record_id, event, message=""):
+        row = self.db_table.get(record_id)
+        name = row["name"]
+
+        self.db_table_logs.insert({
+            "record_id": record_id,
+            "name": name,
+            "event": event,
+            "message": message,
+            "timestamp": datetime.datetime.now().timestamp()
+        }, pk="id")
+
     def mark_as_finished(self, id):
         self.db_table.update(id, {"status" : "Success", "message" : "", "timestamp" : datetime.datetime.now().timestamp()})
+
+        self._log_event(id, "success")
 
     def set_error(self, id, error_message):
         self.db_table.update(id, {"status" : "Error", "message" : error_message, "timestamp" : datetime.datetime.now().timestamp()})
 
+        self._log_event(id, "error")
+
     def retry(self, id):
+        self._log_event(id, "retry")
+
         self.db_table.delete(id)
+
