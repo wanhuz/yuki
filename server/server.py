@@ -325,7 +325,12 @@ if not df.empty:
                     st.rerun()
     with tab2:
         conn = get_db()
-        logs_df = pd.read_sql_query("SELECT * FROM logs", conn)
+        
+        try:
+            logs_df = pd.read_sql_query("SELECT * FROM logs", conn)
+        except Exception:
+            logs_df = pd.DataFrame()  # fallback empty
+
         conn.close()
 
         st.markdown("### Events Over Time")
