@@ -7,3 +7,5 @@ history.db
 .coverage
 env/
 *.log
+envlin/
+locks/
