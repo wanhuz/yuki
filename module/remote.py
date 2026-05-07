@@ -1,3 +1,5 @@
+import os
+import signal
 import subprocess
 import logging
 import time
@@ -31,15 +33,17 @@ class Remote:
             copy_command,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
-            shell=True,
-            text=True
+            text=True,
+            start_new_session=True
         )
 
         try:
             stdout, _ = p.communicate(timeout=3600)  # 1 hour
         except subprocess.TimeoutExpired:
-            p.kill()
+            os.killpg(p.pid, signal.SIGKILL)
+
             stdout, _ = p.communicate()  # clean up remaining output
+            
             record.set_error(file_id, "Transfer timed out")
             return
 
@@ -62,16 +66,23 @@ class Remote:
 
     @staticmethod
     def generate_rclone_copy_commands(path_to_file, path_to_dest):
-        copy_rclone_command = "rclone copyto " + "'" + path_to_file + "' " + "'" + path_to_dest + "'" + " --log-file=yuki_rclone.log"
-        return copy_rclone_command
+        return [
+            "rclone",
+            "copyto",
+            path_to_file,
+            path_to_dest,
+            "--log-file=yuki_rclone.log"
+        ]
     
     @staticmethod
     def generate_rsync_copy_commands(path_to_file, path_to_dest):
-        copy_rsync_command = (
-            f"rsync -av --progress "
-            f"--log-file=yuki_rsync.log --stats --itemize-changes "
-            f"--contimeout=360 "
-            f"'{path_to_file}' '{path_to_dest}' "
-            f">> yuki_rsync.log 2>&1"
-        )
-        return copy_rsync_command
+        return [
+            "rsync",
+            "-av",
+            "--log-file=yuki_rsync.log",
+            "--stats",
+            "--itemize-changes",
+            "--timeout=360",
+            path_to_file,
+            path_to_dest
+        ]
