@@ -1,4 +1,5 @@
 import os
+import shutil
 import signal
 import subprocess
 import logging
@@ -98,7 +99,12 @@ class Remote:
 
     @staticmethod
     def promote_to_final(staging_path, final_path):
+        directory = os.path.dirname(final_path)
 
-        os.makedirs(os.path.dirname(final_path), exist_ok=True)
+        if directory:
+            os.makedirs(directory, exist_ok=True)
 
-        os.replace(staging_path, final_path)
+        try:
+            os.replace(staging_path, final_path)
+        except OSError:
+            shutil.move(staging_path, final_path)
