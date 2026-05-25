@@ -78,7 +78,7 @@ class Remote:
             "--retries=10",
             "--low-level-retries=20",
             "--timeout=1h",
-            "--bwlimit=10M",
+            "--bwlimit=0",
             "--partial-suffix=.partial",
             "--log-file=yuki_rclone.log"
         ]
