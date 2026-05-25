@@ -70,12 +70,10 @@ class Remote:
     def generate_rclone_copy_commands(path_to_file, path_to_dest):
         return [
             "rclone",
-            "copy",
+            "copyto",
             path_to_file,
             path_to_dest,
             "--multi-thread-streams=4",
-            "--transfers=2",
-            "--checkers=4",
             "--multi-thread-cutoff=300M",
             "--retries=10",
             "--low-level-retries=20",
