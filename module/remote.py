@@ -74,11 +74,14 @@ class Remote:
             path_to_file,
             path_to_dest,
             "--multi-thread-streams=4",
-            "--transfers=4",
-            "--multi-thread-cutoff=64M",
+            "--transfers=2",
+            "--checkers=4",
+            "--multi-thread-cutoff=300M",
             "--retries=10",
             "--low-level-retries=20",
-            "--timeout=15m",
+            "--timeout=1h",
+            "--bwlimit=10M",
+            "--partial-suffix=.partial",
             "--log-file=yuki_rclone.log"
         ]
     
