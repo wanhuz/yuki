@@ -57,8 +57,8 @@ class Remote:
                 f"filename: {path_to_file}, errorcode: {return_code}"
             )
             logging.debug(error_msg)
-            logging.debug("STDOUT: " + stdout)
-            logging.debug("Error command: " + copy_command)
+            logging.debug(f"STDOUT:  {stdout}")
+            logging.debug(f"Error command: {copy_command}")
             record.set_error(file_id, error_msg)
             return
         else:
