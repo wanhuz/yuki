@@ -107,4 +107,8 @@ class Remote:
         try:
             os.replace(staging_path, final_path)
         except OSError:
-            shutil.move(staging_path, final_path)
+            try:
+                shutil.move(staging_path, final_path)
+            except Exception:
+                logging.error(f"Failed to move {staging_path} to {final_path}")
+                raise
