@@ -15,13 +15,15 @@ logging.basicConfig(
 class Remote:
 
     @staticmethod
-    def copyto(record : Record, file_id, path_to_file, path_to_dest, file_transfer_tool = "rsync"):
+    def copyto(record: Record, file_id, path_to_file, path_to_dest, file_transfer_tool="rsync", staging_root="/tmp/yuki_stage"):
+
+        staging_dest = os.path.join(staging_root, os.path.basename(path_to_dest))
         
         match file_transfer_tool:
             case "rsync":
-                copy_command = Remote.generate_rsync_copy_commands(path_to_file, path_to_dest)
+                copy_command = Remote.generate_rsync_copy_commands(path_to_file, staging_dest)
             case "rclone":
-                copy_command = Remote.generate_rclone_copy_commands(path_to_file, path_to_dest)
+                copy_command = Remote.generate_rclone_copy_commands(path_to_file, staging_dest)
             case _:
                 logging.debug("Unknown file transfer tool: " + file_transfer_tool)
                 record.set_error(file_id, "Unknown file transfer tool: " + file_transfer_tool)
@@ -61,6 +63,7 @@ class Remote:
             return
         else:
             logging.info(f"Copied {path_to_file} to {path_to_dest}")
+            Remote.promote_to_final(staging_dest, path_to_dest)
             record.mark_as_finished(file_id)
             return
 
@@ -68,7 +71,7 @@ class Remote:
     def generate_rclone_copy_commands(path_to_file, path_to_dest):
         return [
             "rclone",
-            "copyto",
+            "copy",
             path_to_file,
             path_to_dest,
             "--log-file=yuki_rclone.log"
@@ -79,6 +82,8 @@ class Remote:
         return [
             "rsync",
             "-av",
+            "--partial",
+            "--partial-dir=.rsync-partial",
             "--log-file=yuki_rsync.log",
             "--stats",
             "--itemize-changes",
@@ -86,3 +91,9 @@ class Remote:
             path_to_file,
             path_to_dest
         ]
+
+    @staticmethod
+    def promote_to_final(staging_path, final_path):
+        os.makedirs(os.path.dirname(final_path), exist_ok=True)
+
+        os.replace(staging_path, final_path)
