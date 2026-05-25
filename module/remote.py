@@ -18,9 +18,10 @@ class Remote:
     def copyto(record: Record, file_id, path_to_file, path_to_dest, file_transfer_tool="rsync"):
         load_dotenv()
         staging_root = os.getenv("TMP_PATH")
+        os.makedirs(os.path.dirname(staging_root), exist_ok=True) # Untested
         
         staging_dest = os.path.join(staging_root, os.path.basename(path_to_dest))
-        os.makedirs(os.path.dirname(staging_dest), exist_ok=True)
+        
         
         match file_transfer_tool:
             case "rsync":
