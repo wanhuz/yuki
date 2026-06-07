@@ -89,7 +89,7 @@ class Remote:
             "rsync",
             "-av",
             "--partial",
-            "--partial-dir=.rsync-partial",
+            "--partial-dir=../.rsync-partial",
             "--log-file=yuki_rsync.log",
             "--stats",
             "--itemize-changes",
