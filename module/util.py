@@ -18,20 +18,17 @@ class Util:
 
     @staticmethod
     def generate_path_to_dest_file(dest_path, filename):
-        sanitized_filename = sanitize_filename(str(filename))
-        
-        path_to_dest_file = dest_path
-        return path_to_dest_file
+        return dest_path + filename
 
     @staticmethod
     def generate_path_to_src_file(src_path, filename):
-
-        return src_path
+        return src_path + filename
     
     @staticmethod
     # Escape quote inside bash as bash command is literal
     def escape_quotes_parser(filename):
         # Solution: https://stackoverflow.com/a/48352047
+        
         single_quote = "'"
         double_quote = '"' 
         escape_single_quote = r"'\''"
