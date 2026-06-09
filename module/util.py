@@ -20,16 +20,13 @@ class Util:
     def generate_path_to_dest_file(dest_path, filename):
         sanitized_filename = sanitize_filename(str(filename))
         
-        path_to_dest_file = dest_path + Util.escape_quotes_parser(sanitized_filename)
+        path_to_dest_file = dest_path
         return path_to_dest_file
 
     @staticmethod
     def generate_path_to_src_file(src_path, filename):
-        escaped_filename = Util.escape_quotes_parser(filename)
-        escaped_src_path = Util.escape_quotes_parser(src_path)
 
-        path_to_file = escaped_src_path + escaped_filename
-        return path_to_file
+        return src_path
     
     @staticmethod
     # Escape quote inside bash as bash command is literal
