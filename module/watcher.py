@@ -67,9 +67,10 @@ class Watcher:
 
                     if (self.filename_match_allowed_exts(filename)):
                         logging.info("Attempting to copy " + filename + " over to destination directory")
-            
-                        path_to_file = Util.generate_path_to_src_file(src_path, filename)
-                        path_to_dest_file = Util.generate_path_to_dest_file(self.dest_path, filename)
+                        sanitized_filename = Util.escape_quotes_parser(filename)
+                        
+                        path_to_file = Util.generate_path_to_src_file(src_path, sanitized_filename)
+                        path_to_dest_file = Util.generate_path_to_dest_file(self.dest_path, sanitized_filename)
                         if (not self.dry_run):
                             self.copy_once(file_id, path_to_file,path_to_dest_file, self.debug_mode)
 

@@ -18,7 +18,7 @@ class Remote:
     @staticmethod
     def copyto(record: Record, file_id, path_to_file, path_to_dest, file_transfer_tool="rsync"):
 
-        
+
         match file_transfer_tool:
             case "rsync":
                 copy_command = Remote.generate_rsync_copy_commands(path_to_file, path_to_dest)
